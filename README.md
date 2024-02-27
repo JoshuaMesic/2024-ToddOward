@@ -6,7 +6,7 @@ This project aims to combine text-to-speech technology and Chat-GPT to create a 
 ## Team members 
 - Ethan McCagherty
 - Joshua Mesic
-- Leke shehu
+- Leke Shehu
 
 ## Tech Stack
 - Mini-USB-Microphone: URL: https://www.amazon.com/Microphone-Gooseneck-Universal-Compatible-CGS-M1/dp/B08M37224H/ref=sr_1_20?keywords=usb+microphone&s=electronics&sr=1-20
