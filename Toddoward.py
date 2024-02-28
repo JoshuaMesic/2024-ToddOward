@@ -1,55 +1,71 @@
-import speech_recognition as sr
-from gtts import gTTS
-from openai import OpenAI
-import os
-import pyaudio
+import assemblyai as aai
+import openai
+import elevenlabs
+from queue import Queue
 
+# Set API keys
+aai.settings.api_key = "1b7428b059924cc08e3e3ad1a6d33bb4"
+openai.api_key = "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"
+elevenlabs.set_api_key("68e0afd04e31ca18a2dbd859ed22d81d") 
 
-recognizer = sr.Recognizer()
-client = OpenAI(api_key="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")
+transcript_queue = Queue()
 
-# used to listen to microphone and then create text
+def on_data(transcript: aai.RealtimeTranscript):
+    if not transcript.text:
+        return
+    if isinstance(transcript, aai.RealtimeFinalTranscript):
+        transcript_queue.put(transcript.text + '')
+        print("User:", transcript.text, end="\r\n")
+    else:
+        print(transcript.text, end="\r")
 
+def on_error(error: aai.RealtimeError):
+    print("An error occured:", error)
 
-def speech_to_text():
-    with sr.Microphone() as source:
-        print("Listening...")
-        audio = recognizer.listen(source)
-        try:
-            text = recognizer.recognize_google(audio)
-            print("You said:", text)
-            return text
-        except sr.UnknownValueError:
-            print("Sorry, could not understand audio.")
-            return ""
+# Conversation loop
+def handle_conversation():
+    while True:
+        transcriber = aai.RealtimeTranscriber(
+            on_data=on_data,
+            on_error=on_error,
+            sample_rate=44_100,
+        )
 
-# cookie cutter chat api needs work
+        # Start the connection
+        transcriber.connect()
 
+        # Open  the microphone stream
+        microphone_stream = aai.extras.MicrophoneStream()
 
-def chat_gpt(messages):
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Who won the world series in 2020?"},
-            {"role": "assistant",
-             "content": "The Los Angeles Dodgers won the World Series in 2020."},
-            {"role": "user", "content": "Where was it played?"}
-        ]
-    )
-    return response.choices[0].message['content']
+        # Stream audio from the microphone
+        transcriber.stream(microphone_stream)
 
+        # Close current transcription session with Crtl + C
+        transcriber.close()
 
-def text_to_speech(text):
-    tts = gTTS(text=text, lang='en')
-    tts.save("output.mp3")
-    os.system("mpg321 output.mp3")
+        # Retrieve data from queue
+        transcript_result = transcript_queue.get()
 
+        # Send the transcript to OpenAI for response generation
+        response = openai.ChatCompletion.create(
+            model = 'gpt-4',
+            messages = [
+                {"role": "system", "content": 'You are a highly skilled AI, answer the questions given within a maximum of 1000 characters.'},
+                {"role": "user", "content": transcript_result}
+            ]
+        )
 
-while True:
-    input_text = speech_to_text()
-    if input_text.lower() == 'exit':
-        break
-    response = chat_gpt(input_text)
-    print("ChatGPT:", response)
-    text_to_speech(response)
+        #text = response['choices'][0]['message']['content']
+        text = "AssemblyAI is the best YouTube channel for the latest AI tutorials."
+
+        # Convert the response to audio and play it
+        audio = elevenlabs.generate(
+            text=text,
+            voice="Bella" # or any voice of your choice
+        )
+
+        print("\nAI:", text, end="\r\n")
+
+        elevenlabs.play(audio)
+
+handle_conversation()
