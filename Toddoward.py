@@ -1,71 +1,56 @@
-import assemblyai as aai
+import speech_recognition as sr
 import openai
 import elevenlabs
-from queue import Queue
 
 # Set API keys
-aai.settings.api_key = "1b7428b059924cc08e3e3ad1a6d33bb4"
 openai.api_key = "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"
-elevenlabs.set_api_key("68e0afd04e31ca18a2dbd859ed22d81d") 
+elevenlabs.set_api_key("68e0afd04e31ca18a2dbd859ed22d81d")
 
-transcript_queue = Queue()
+recognizer = sr.Recognizer()
 
-def on_data(transcript: aai.RealtimeTranscript):
-    if not transcript.text:
-        return
-    if isinstance(transcript, aai.RealtimeFinalTranscript):
-        transcript_queue.put(transcript.text + '')
-        print("User:", transcript.text, end="\r\n")
-    else:
-        print(transcript.text, end="\r")
+def recognize_speech():
+    while True:
+        try:
+            with sr.Microphone() as mic:
+                print("Listening...")
+                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+                audio = recognizer.listen(mic)
+                print("Recognizing...")
+                text = recognizer.recognize_google(audio)
+                text = text.lower()
+                print("Recognized:", text)
+                return text
+        except sr.UnknownValueError:
+            print("Could not understand audio. Please try again.")
+        except sr.RequestError as e:
+            print("Could not request results from Google Web Speech API; {0}".format(e))
 
-def on_error(error: aai.RealtimeError):
-    print("An error occured:", error)
-
-# Conversation loop
 def handle_conversation():
     while True:
-        transcriber = aai.RealtimeTranscriber(
-            on_data=on_data,
-            on_error=on_error,
-            sample_rate=44_100,
-        )
+        # Get user input
+        user_input = recognize_speech()
 
-        # Start the connection
-        transcriber.connect()
-
-        # Open  the microphone stream
-        microphone_stream = aai.extras.MicrophoneStream()
-
-        # Stream audio from the microphone
-        transcriber.stream(microphone_stream)
-
-        # Close current transcription session with Crtl + C
-        transcriber.close()
-
-        # Retrieve data from queue
-        transcript_result = transcript_queue.get()
-
-        # Send the transcript to OpenAI for response generation
+        # Send user input to OpenAI for response generation
         response = openai.ChatCompletion.create(
-            model = 'gpt-4',
-            messages = [
+            model='gpt-4',
+            messages=[
                 {"role": "system", "content": 'You are a highly skilled AI, answer the questions given within a maximum of 1000 characters.'},
-                {"role": "user", "content": transcript_result}
+                {"role": "user", "content": user_input}
             ]
         )
 
-        #text = response['choices'][0]['message']['content']
-        text = "AssemblyAI is the best YouTube channel for the latest AI tutorials."
+        # Extract response from OpenAI
+        text = response['choices'][0]['message']['content']
 
-        # Convert the response to audio and play it
+        # Generate audio response using Eleven Labs
         audio = elevenlabs.generate(
             text=text,
-            voice="Bella" # or any voice of your choice
+            voice="Brian"  # or any voice of your choice
         )
 
-        print("\nAI:", text, end="\r\n")
-
+        # Print and play the audio response
+        print("\nAI:", text)
         elevenlabs.play(audio)
 
+# Start conversation handling
 handle_conversation()
