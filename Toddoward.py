@@ -1,10 +1,16 @@
+import os
 import speech_recognition as sr
 import openai
-import elevenlabs
+from google.cloud import texttospeech
 
-# Set API keys
+# Set OpenAI API key
 openai.api_key = "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"
-elevenlabs.set_api_key("68e0afd04e31ca18a2dbd859ed22d81d")
+
+# Set Google Cloud credentials environment variable
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "quiet-notch-416417-5bedaa33d410.json"
+
+# Initialize Google Cloud Text-to-Speech client
+client = texttospeech.TextToSpeechClient()
 
 recognizer = sr.Recognizer()
 
@@ -42,15 +48,29 @@ def handle_conversation():
         # Extract response from OpenAI
         text = response['choices'][0]['message']['content']
 
-        # Generate audio response using Eleven Labs
-        audio = elevenlabs.generate(
-            text=text,
-            voice="Brian"  # or any voice of your choice
+        # Print AI response
+        print("\nAI:", text)
+
+        # Generate audio response using Google Cloud Text-to-Speech API
+        synthesis_input = texttospeech.SynthesisInput(text=text)
+        voice = texttospeech.VoiceSelectionParams(
+            language_code="en-US",  # Specify desired language code
+            name="en-US-Neural2-A",  # Specify desired voice model
+        )
+        audio_config = texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.MP3  # MP3 audio format
+        )
+        response = client.synthesize_speech(
+            input=synthesis_input, voice=voice, audio_config=audio_config
         )
 
-        # Print and play the audio response
-        print("\nAI:", text)
-        elevenlabs.play(audio)
+        # Save the audio response to a file
+        with open('output.mp3', 'wb') as out:
+            out.write(response.audio_content)
+
+        # Play the audio response
+        import os
+        os.system('start output.mp3')
 
 # Start conversation handling
 handle_conversation()
