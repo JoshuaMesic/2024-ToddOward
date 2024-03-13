@@ -15,7 +15,9 @@ This project aims to combine text-to-speech technology and Chat-GPT to create a 
 - On off Switch: URL: https://www.amazon.ca/GINTOOYUN-Dimming-Controller-Phone%EF%BC%8CUSB-3-28ft%EF%BC%89/dp/B0CP9CZCWX/ref=sr_1_2_sspa?keywords=usb+on+off+switch&qid=1706740499&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1
 - Micro-servo motor x2 : URL: https://www.amazon.ca/Miuzei-Motors-Helicopter-Airplane-Control/dp/B07Z16DWGW/ref=sr_1_5?crid=UKBC2TFZDUQO&keywords=micro+servo+motor&qid=1706740235&sprefix=%2Caps%2C121&sr=8-5
 
-## Imprementation Details
+## Implementation Details
+- Following an AssebilyAI youtube Video team members created a python script using a python build in library SpeechRegocnition, Openai API and google.cloud text-to-speech to take human speech and send it to chat-GPT and then take chat-GPTS Output and use the output to create an audio file of the reply.
+- Once the Script was finished we utilizes a raspberry pi to run the script so that the we could place the python script within Todd Oward and allow mobility 
 
 
 ## Inspirations/references
