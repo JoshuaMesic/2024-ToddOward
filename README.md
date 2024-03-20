@@ -25,3 +25,4 @@ This project aims to combine text-to-speech technology and Chat-GPT to create a 
 - “AI Assistant Robot with Arduino and Python.” Projecthub.Arduino.Cc, projecthub.arduino.cc/ashraf_minhaj/ai-assistant-robot-with-arduino-and-python-ff8980. Accessed 17 Jan. 2024. 
 - Build Talking AI ChatBot with Text-to-Speech using Python! https://www.youtube.com/watch?v=x_gZYZ59cys
 - How to Download FFmpeg https://www.youtube.com/watch?v=r1AtmY-RMyQ
+- Good video for going over the basics of a servo motor and how to do the basic coding https://www.youtube.com/watch?v=_fdwE4EznYo
