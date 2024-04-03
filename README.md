@@ -18,7 +18,7 @@ This project aims to combine text-to-speech technology and Chat-GPT to create a 
 ## Implementation Details
 - Following an AssebilyAI youtube Video team members created a python script using a python build in library SpeechRegocnition, Openai API and google.cloud text-to-speech to take human speech and send it to chat-GPT and then take chat-GPTS Output and use the output to create an audio file of the reply.
 - Once the Script was finished we utilizes a raspberry pi to run the script so that the we could place the python script within Todd Oward and allow mobility
-- after added to the respberry pi we can now placed and organize the compentents within todd so we can then speak to the manikin.
+- after added to the respberry pi we can now place and organize the compentents within todd so we can then speak to the manikin.
 
 
 ## Inspirations/references
