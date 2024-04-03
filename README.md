@@ -16,14 +16,14 @@ This project aims to combine text-to-speech technology and Chat-GPT to create a 
 - Micro-servo motor x2 : URL: https://www.amazon.ca/Miuzei-Motors-Helicopter-Airplane-Control/dp/B07Z16DWGW/ref=sr_1_5?crid=UKBC2TFZDUQO&keywords=micro+servo+motor&qid=1706740235&sprefix=%2Caps%2C121&sr=8-5
 
 ## Implementation Details
-- Following an AssebilyAI youtube Video team members created a python script using a python build in library SpeechRegocnition, Openai API and google.cloud text-to-speech to take human speech and send it to chat-GPT and then take chat-GPTS Output and use the output to create an audio file of the reply.
-- Once the Script was finished we utilizes a raspberry pi to run the script so that the we could place the python script within Todd Oward and allow mobility
-- after added to the respberry pi we can now place and organize the compentents within todd so we can then speak to the manikin.
+- Following an AssebilyAI YouTube video team members created a Python script using a Python built-in library SpeechRegocnition, Openai API, and google.cloud text-to-speech to take human speech and send it to chat-GPT and then take chat-GPTS Output and use the output to create an audio file of the reply.
+- Once the Script was finished we utilized a Raspberry Pi to run the script so that we could place the Python script within Todd Oward and allow mobility
+- after adding to the Raspberry Pi we can now place and organize the components within Todd so we can then speak to the manikin.
 
 
 ## Inspirations/references
 - Team Group 5: Addison Cahill Waller. “Debuggy Ducky.” Hackster.Io, 15 Dec. 2023, www.hackster.io/group-5/debuggy-ducky-bf1a01.
 - “AI Assistant Robot with Arduino and Python.” Projecthub.Arduino.Cc, projecthub.arduino.cc/ashraf_minhaj/ai-assistant-robot-with-arduino-and-python-ff8980. Accessed 17 Jan. 2024. 
-- Build Talking AI ChatBot with Text-to-Speech using Python! https://www.youtube.com/watch?v=x_gZYZ59cys
+- Build a Talking AI ChatBot with Text-to-Speech using Python! https://www.youtube.com/watch?v=x_gZYZ59cys
 - How to Download FFmpeg https://www.youtube.com/watch?v=r1AtmY-RMyQ
 - Good video for going over the basics of a servo motor and how to do the basic coding https://www.youtube.com/watch?v=_fdwE4EznYo
