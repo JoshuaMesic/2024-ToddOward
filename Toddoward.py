@@ -9,10 +9,10 @@ from time import sleep
 import threading 
 
 # Set OpenAI API key
-openai.api_key = "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"
+openai.api_key = "INSERT OPENAI API KEY HERE"
 
 # Set Google Cloud credentials environment variable
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "quiet-notch-416417-5bedaa33d410.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "GOOGLE APPLICATION CREDENTAILS"
 
 # Initialize Google Cloud Text-to-Speech client
 client = texttospeech.TextToSpeechClient()
